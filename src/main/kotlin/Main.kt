@@ -1,63 +1,28 @@
 import kotlin.math.PI
+
 fun main() {
 
-    val squareCabin = SquareCabin(6,50.5)
-    val roundHut = RoundHut(4, 10.0)
-    val roundTower = RoundTower(5,15.5)
+    val arr = arrayOf(1, 2, 3, 4, 5)
+    arr.swap(0, 4)
 
-    with(squareCabin) {
-        println("\nSquare Cabin\n============")
-        println("Capacity: ${capacity}")
-        println("Material: ${buildingMaterial}")
-        println("Has room? ${hasRoom()}")
-        println("Floor area: ${floorArea()}")
+//  println(arr) и так как будет просто хеш код на 1 общ элемент так как в классе Array нет метода toString
+//  а нам надо все эл глянуть массива
+//  этот массив надо отдельно пробежать fun расширения
 
-        with(roundHut) {
-            println("\nRound Hut\n=========")
-            println("Material: ${buildingMaterial}")
-            println("Capacity: ${capacity}")
-            println("Has room? ${hasRoom()}")
-            println("Floor area: ${floorArea()}")}
-
-        with(roundTower) {
-            println("\nRound Hut\n=========")
-            println("Material: ${buildingMaterial}")
-            println("Capacity: ${capacity}")
-            println("Has room? ${hasRoom()}")
-            println("Floor area: ${floorArea()}")}
-    }
+    println(arr.print())  // и вот мы поменяли при пом fun  расширения 0 и 4 эл местами 5 и 1 цифра
 }
 
-abstract class Dwelling(private var residents: Int) {
-    abstract val capacity: Int
-    abstract val buildingMaterial: String
+fun Array<Int>.swap(i1: Int, i2: Int) {
+    val el1 = this[i1]  //мы через this обращаемся к элементу массива у которого будет вызван метод swap
+    val el2 = this[i2]
 
-    fun hasRoom(): Boolean {
-        return residents < capacity
-    }
-    abstract fun floorArea(): Double
+    this[i1] = el2
+    this[i2] = el1
 }
 
-class SquareCabin(residents: Int,val length : Double) : Dwelling(residents) {
-    override val capacity: Int = 6
-    override val buildingMaterial: String = "WOOD"
-    override fun floorArea(): Double {
-        return length * length
-    }
-}
-
-open class RoundHut(residents: Int,val radius: Double) : Dwelling(residents) {
-    override val capacity: Int = 4
-    override val buildingMaterial: String = "железо"
-    override fun floorArea(): Double {
-        return PI * radius * radius
-    }
-}
-
-class RoundTower(residents: Int,radius: Double, val floors: Int = 2) : RoundHut(residents,radius) {
-    override val capacity: Int = 4 * floors
-    override val buildingMaterial: String = "камень"
-    override fun floorArea(): Double {
-        return super.floorArea() * floors
+//фун расширения чтобы глянуть у каждого элемента в массиве данные без нее будет один общий хешкод на массив
+fun Array<Int>.print() {
+    for (i in this) {  // перебераем некие обьекты i которые находятся внутримассива куда мы применим эту fun расширения
+        println(i)
     }
 }
