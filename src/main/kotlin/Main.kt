@@ -1,35 +1,63 @@
+import kotlin.math.PI
 fun main() {
-    val user1 = Dice("Гриха")
-    val user2 = Dice("Леха")
-    val user3 = Dice("Саня")
-    println("${user1.name} БРОШЕН КУБИК ЦВЕТОМ - ${user1.randomColor} С КОЛЛИЧЕСТВОМ ПОЛЕЙ - ${user1.range}")
-    println("${user2.name} КУБИК ЦВЕТОМ - ${user2.randomColor} С КОЛЛИЧЕСТВОМ ПОЛЕЙ - ${user2.range}")
-    println("${user3.name} КУБИК ЦВЕТОМ - ${user3.randomColor} С КОЛЛИЧЕСТВОМ ПОЛЕЙ - ${user3.range}")
 
-    val listUsers = listOf<Dice>(user1, user2, user3)
+    val squareCabin = SquareCabin(6,50.5)
+    val roundHut = RoundHut(4, 10.0)
+    val roundTower = RoundTower(5,15.5)
 
-    val start: Coin = Coin()
-    start.game(listUsers)
+    with(squareCabin) {
+        println("\nSquare Cabin\n============")
+        println("Capacity: ${capacity}")
+        println("Material: ${buildingMaterial}")
+        println("Has room? ${hasRoom()}")
+        println("Floor area: ${floorArea()}")
+
+        with(roundHut) {
+            println("\nRound Hut\n=========")
+            println("Material: ${buildingMaterial}")
+            println("Capacity: ${capacity}")
+            println("Has room? ${hasRoom()}")
+            println("Floor area: ${floorArea()}")}
+
+        with(roundTower) {
+            println("\nRound Hut\n=========")
+            println("Material: ${buildingMaterial}")
+            println("Capacity: ${capacity}")
+            println("Has room? ${hasRoom()}")
+            println("Floor area: ${floorArea()}")}
+    }
 }
 
-class Dice(val name: String) {
-    val colors = arrayListOf("красный/", "синий/", "зеленый/", "белый/", "черный/")
-    var randomColor = colors.random()
-    val range = (1..20).random()
+abstract class Dwelling(private var residents: Int) {
+    abstract val capacity: Int
+    abstract val buildingMaterial: String
+
+    fun hasRoom(): Boolean {
+        return residents < capacity
+    }
+    abstract fun floorArea(): Double
 }
 
-class Coin() {
-    private var number = 0
-    private var name = ""
-    fun game(list: List<Dice>) {
-        for (i in 0..list.size) {
-            val item = list[i]
-            number = item.range
-            name = item.name
-            val resultGame = (1..number).random()
-            if (resultGame == item.range) {
-                println("ИГРОК ${name} ПОЗДРАВЛЯЮ ЧИСЛА СОВПАЛИ!!! ВЫИГРАЛ! число было = ${resultGame}")
-            }
-        }
+class SquareCabin(residents: Int,val length : Double) : Dwelling(residents) {
+    override val capacity: Int = 6
+    override val buildingMaterial: String = "WOOD"
+    override fun floorArea(): Double {
+        return length * length
+    }
+}
+
+open class RoundHut(residents: Int,val radius: Double) : Dwelling(residents) {
+    override val capacity: Int = 4
+    override val buildingMaterial: String = "железо"
+    override fun floorArea(): Double {
+        return PI * radius * radius
+    }
+}
+
+class RoundTower(residents: Int,radius: Double, val floors: Int = 2) : RoundHut(residents,radius) {
+    override val capacity: Int = 4 * floors
+    override val buildingMaterial: String = "камень"
+    override fun floorArea(): Double {
+        return super.floorArea() * floors
     }
 }
